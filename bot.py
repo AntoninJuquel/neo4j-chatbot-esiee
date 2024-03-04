@@ -1,7 +1,7 @@
 import streamlit as st
 from utils import write_message
 
-from scoped import generate_response
+from agent import generate_response
 
 # tag::setup[]
 # Page Config
