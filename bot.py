@@ -5,19 +5,25 @@ from agent import generate_response
 
 # tag::setup[]
 # Page Config
-st.set_page_config("Ebert", page_icon=":movie_camera:")
+st.set_page_config("CineBot", page_icon=":movie_camera:")
 # end::setup[]
 
 # tag::session[]
 # Set up Session State
 if "messages" not in st.session_state:
+    bot_prompt = """
+Welcome to the Movie Assistant Chatbot!  
+I'm here to assist you with all things movies. Feel free to ask any movie-related questions, and I'll provide you with the information you're looking for. Whether it's details about actors, popular movies, or recommendations based on your preferences – I've got you covered. Let's dive into the world of cinema together! 🎬🤖
+"""
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hi, I'm the GraphAcademy Chatbot!  How can I help you?"},
+        {"role": "assistant", "content": bot_prompt},
     ]
 # end::session[]
 
 # tag::submit[]
 # Submit handler
+
+
 def handle_submit(message):
     """
     Submit handler:
