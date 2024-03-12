@@ -1,11 +1,28 @@
 import streamlit as st
-from utils import write_message
-
 from agent import generate_response
+from utils import write_message
 
 # tag::setup[]
 # Page Config
 st.set_page_config("CineBot", page_icon=":movie_camera:")
+
+key_choice = st.sidebar.radio(
+    "OpenAI API Key",
+    (
+        "Your Key",
+        "Free Key (capped)",
+    ),
+    horizontal=True,
+)
+
+if key_choice == "Your Key":
+    OPENAI_API_KEY = st.sidebar.text_input(
+        "First, enter your OpenAI API key", type="password"
+    )
+
+elif key_choice == "Free Key (capped)":
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+
 # end::setup[]
 
 # tag::session[]
