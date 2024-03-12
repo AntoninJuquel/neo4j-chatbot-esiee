@@ -1,30 +1,18 @@
-# tag::importst[]
 import streamlit as st
-# end::importst[]
-# tag::importvector[]
 from langchain_community.vectorstores.neo4j_vector import Neo4jVector
-# end::importvector[]
-# tag::importqa[]
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-# end::importqa[]
-# tag::importretrievalqa[]
 from langchain.chains import RetrievalQA
-# end::importretrievalqa[]
-
-# This file is in the solutions folder to separate the solution
-# from the starter project code.
 from llm import llm, embeddings
 
-# tag::vector[]
 neo4jvector = Neo4jVector.from_existing_index(
-    embeddings,                              # <1>
-    url=st.secrets["NEO4J_URI"],             # <2>
-    username=st.secrets["NEO4J_USERNAME"],   # <3>
-    password=st.secrets["NEO4J_PASSWORD"],   # <4>
-    index_name="moviePlots",                 # <5>
-    node_label="Movie",                      # <6>
-    text_node_property="plot",               # <7>
-    embedding_node_property="plotEmbedding", # <8>
+    embeddings,
+    url=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
+    index_name="moviePlots",
+    node_label="Movie",
+    text_node_property="plot",
+    embedding_node_property="plotEmbedding",
     retrieval_query="""
 RETURN
     node.plot AS text,
@@ -38,29 +26,10 @@ RETURN
     } AS metadata
 """
 )
-# end::vector[]
 
-# tag::retriever[]
 retriever = neo4jvector.as_retriever()
-# end::retriever[]
-
-# tag::qa[]
 kg_qa = RetrievalQA.from_chain_type(
-    llm,                  # <1>
-    chain_type="stuff",   # <2>
-    retriever=retriever,  # <3>
+    llm,
+    chain_type="stuff",
+    retriever=retriever,
 )
-# end::qa[]
-
-# tag::generate-response[]
-def generate_response(prompt):
-    """
-    Use the Neo4j Vector Search Index
-    to augment the response from the LLM
-    """
-
-    # Handle the response
-    response = kg_qa({"question": prompt})
-
-    return response['answer']
-# end::generate-response[]

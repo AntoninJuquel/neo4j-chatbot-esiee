@@ -1,20 +1,12 @@
-# tag::importtool[]
+from langchain.prompts import PromptTemplate
 from langchain.tools import Tool
-# end::importtool[]
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain import hub
-# tag::importmemory[]
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
-# end::importmemory[]
-
 from llm import llm
-
-# Use the Chains built in the previous lessons
 from tools.vector import kg_qa
-# from solutions.tools.fewshot import cypher_qa
 from tools.cypher import cypher_qa
 
-# tag::tools[]
 tools = [
     Tool.from_function(
         name="General Chat",
@@ -26,34 +18,25 @@ tools = [
     Tool.from_function(
         name="Cypher QA",
         description="Provide information about movies questions using Cypher",
-        func = cypher_qa,
+        func=cypher_qa,
         return_direct=False,
         handle_parsing_errors=True
     ),
     Tool.from_function(
         name="Vector Search Index",
         description="Provides information about movie plots using Vector Search",
-        func = kg_qa,
+        func=kg_qa,
         return_direct=False,
         handle_parsing_errors=True
     )
 ]
-# end::tools[]
 
-
-# tag::memory[]
 memory = ConversationBufferWindowMemory(
     memory_key='chat_history',
     k=5,
     return_messages=True,
 )
-# end::memory[]
 
-# tag::importprompt[]
-from langchain.prompts import PromptTemplate
-# end::importprompt[]
-
-# tag::prompt[]
 agent_prompt = PromptTemplate.from_template("""
 You are a movie expert providing information about movies.
 Be as helpful as possible and return as much information as possible.
@@ -92,9 +75,7 @@ Previous conversation history:
 New input: {input}
 {agent_scratchpad}
 """)
-# end::prompt[]
 
-# tag::agent[]
 agent = create_react_agent(llm, tools, agent_prompt)
 agent_executor = AgentExecutor(
     agent=agent,
@@ -102,16 +83,12 @@ agent_executor = AgentExecutor(
     memory=memory,
     verbose=True
 )
-# end::agent[]
 
-# tag::generate_response[]
+
 def generate_response(prompt):
     """
     Create a handler that calls the Conversational agent
     and returns a response to be rendered in the UI
     """
-
     response = agent_executor.invoke({"input": prompt})
-
     return response['output']
-# end::generate_response[]
