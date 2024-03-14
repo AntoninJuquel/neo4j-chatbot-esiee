@@ -4,6 +4,8 @@ You can use the chatbot link:https://neo4j-chatbot-esiee.streamlit.app[here], th
 
 This repository follows the link:https://graphacademy.neo4j.com/courses/llm-chatbot-python/?ref=github[Build an Neo4j-backed Chatbot using Python^] course on link:https://graphacademy.neo4j.com/?ref=github[Neo4j GraphAcademy^].
 
+What our video presentation (in french): https://youtu.be/p1mVPiIo9pY
+
 == Running the application locally
 
 To run the application, you must install the libraries listed in `requirements.txt`.
